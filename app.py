@@ -31,12 +31,12 @@ from utils import (
 from video_processor import process_video
 
 
+
 # =============================================================================
 # Page config + global CSS
 # =============================================================================
 st.set_page_config(
     page_title="ASCII Art Studio",
-    page_icon="▓",
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -93,7 +93,7 @@ st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 st.markdown(
     """
     <div class="hero">
-      <div class="title">▓▒░ ASCII Art Studio ░▒▓</div>
+      <div class="title">ASCII Art Studio</div>
       <div class="subtitle">Turn images and video into luminous ASCII — monochrome, true-color, or retro-themed.</div>
       <div>
         <span class="badge">Vectorized NumPy</span>
@@ -110,7 +110,7 @@ st.markdown(
 # Sidebar controls
 # =============================================================================
 with st.sidebar:
-    st.markdown("### ⚙️ Conversion")
+    st.markdown("### Conversion")
     output_width = st.slider(
         "Output width (characters)", 60, 320, 160, 10,
         help="Wider = more detail, slower to render.",
@@ -121,12 +121,12 @@ with st.sidebar:
              "lower values squash vertically, higher values stretch.",
     )
 
-    st.markdown("### 🎚️ Tuning")
+    st.markdown("### Tuning")
     brightness = st.slider("Brightness", -0.50, 0.50, 0.00, 0.05)
     contrast = st.slider("Contrast", 0.50, 2.00, 1.10, 0.05)
     gamma = st.slider("Gamma", 0.40, 2.50, 1.00, 0.05)
 
-    st.markdown("### 🎨 Theme")
+    st.markdown("### Theme")
     theme_name = st.selectbox("Color engine", list(THEMES.keys()), index=0)
     theme = THEMES[theme_name]
     st.caption(theme.get("description", ""))
@@ -148,7 +148,7 @@ with st.sidebar:
         help="On dark themes leave this off. For dark-on-light output, turn it on.",
     )
 
-    st.markdown("### 🔤 Character ramp")
+    st.markdown("### Character ramp")
     charset = st.text_area(
         "Dense → sparse",
         value=DEFAULT_CHARSET,
@@ -160,12 +160,12 @@ with st.sidebar:
         st.warning("Charset too short; using the default.")
         charset = DEFAULT_CHARSET
 
-    st.markdown("### 🌀 Visual FX")
+    st.markdown("### Visual FX")
     fx_scanlines = st.slider("CRT scanlines", 0.00, 0.60, 0.00, 0.05)
     fx_noise = st.slider("Grain / noise", 0.00, 0.20, 0.00, 0.01)
     fx_glow = st.slider("Phosphor glow", 0.00, 0.80, 0.00, 0.05)
 
-    st.markdown("### 🔡 Render")
+    st.markdown("### Render")
     font_size = st.slider("Font size (px)", 8, 22, 12, 1)
 
     st.markdown("---")
@@ -214,7 +214,7 @@ def convert_frame(rgb: np.ndarray, renderer: AsciiRenderer) -> tuple[np.ndarray,
 # =============================================================================
 # Main stage: tabs
 # =============================================================================
-tab_img, tab_vid, tab_help = st.tabs(["🖼️  Image", "🎬  Video", "📖  About"])
+tab_img, tab_vid, tab_help = st.tabs(["Image", "Video", "About"])
 
 # -----------------------------------------------------------------------------
 # IMAGE TAB
@@ -266,11 +266,11 @@ with tab_img:
                 out_arr, char_grid = convert_frame(source_rgb, renderer)
             st.image(out_arr, use_container_width=True)
 
-            st.markdown("#### 📥 Export")
+            st.markdown("#### Export")
             c1, c2, c3 = st.columns(3)
             with c1:
                 st.download_button(
-                    "📝  .txt",
+                    ".txt",
                     data=ascii_to_text(char_grid),
                     file_name="ascii_art.txt",
                     mime="text/plain",
@@ -279,20 +279,20 @@ with tab_img:
             with c2:
                 png_bytes = pil_to_bytes(Image.fromarray(out_arr), fmt="PNG")
                 st.download_button(
-                    "🖼️  .png",
+                    ".png",
                     data=png_bytes,
                     file_name="ascii_art.png",
                     mime="image/png",
                     use_container_width=True,
                 )
             with c3:
-                if st.button("🔍  Render 2× .png", use_container_width=True):
+                if st.button("ender 2× .png", use_container_width=True):
                     with st.spinner("Rendering at 2× size…"):
                         hi_renderer = get_renderer(charset, font_size * 2)
                         hi_arr, _ = convert_frame(source_rgb, hi_renderer)
                         hi_bytes = pil_to_bytes(Image.fromarray(hi_arr), fmt="PNG")
                     st.download_button(
-                        "⬇️  Download 2×",
+                        "⬇Download 2×",
                         data=hi_bytes,
                         file_name="ascii_art_2x.png",
                         mime="image/png",
@@ -395,7 +395,7 @@ with tab_vid:
             video_bytes = f.read()
         st.video(video_bytes)
         st.download_button(
-            "📥  Download .mp4",
+            "Download .mp4",
             data=video_bytes,
             file_name="ascii_art.mp4",
             mime="video/mp4",
@@ -444,3 +444,10 @@ aesthetics. They work independently and play well with any theme.
 Built with Streamlit, OpenCV, NumPy, and Pillow.
 """.format(img_mb=MAX_IMAGE_MB, vid_mb=MAX_VIDEO_MB)
     )
+st.markdown(
+    "<div style='text-align:center;color:#6b7280;padding:8px;font-size:13px;'>"
+    "Built by <a href='https://instagram.com/kanishk.io' "
+    "style='color:#ff3da2;text-decoration:none;'>@kanishk.io</a> · "
+    "Tag me if you make something cool</div>",
+    unsafe_allow_html=True,
+)

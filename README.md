@@ -1,4 +1,4 @@
-# ▓▒░ ASCII Art Studio ░▒▓
+ASCII Art Studio
 
 A production-grade Streamlit app that converts images and videos into high-quality
 ASCII art — with monochrome, true-color, and retro terminal themes, plus lo-fi

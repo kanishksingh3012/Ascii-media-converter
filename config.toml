@@ -6,7 +6,7 @@ secondaryBackgroundColor = "#0e0e18"
 textColor = "#eaeaea"
 
 [server]
-maxUploadSize = 80
+maxUploadSize = 30
 enableXsrfProtection = true
 
 [browser]

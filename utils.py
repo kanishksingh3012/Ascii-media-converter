@@ -12,7 +12,7 @@ from PIL import Image
 
 MAX_IMAGE_DIM = 4096          # longest-side cap for uploaded stills
 MAX_IMAGE_MB = 15             # reject larger uploads outright
-MAX_VIDEO_MB = 75             # matches .streamlit/config.toml
+MAX_VIDEO_MB = 30             # matches .streamlit/config.toml
 
 
 def read_image_bytes(data: bytes) -> np.ndarray:
