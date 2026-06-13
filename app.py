@@ -33,6 +33,12 @@ from video_processor import process_video
 
 
 # =============================================================================
+# Creator / branding constants
+# =============================================================================
+CREATOR_HANDLE = "kanishk.io"
+CREATOR_INSTAGRAM_URL = "https://instagram.com/kanishk.io"
+
+# =============================================================================
 # Page config + global CSS
 # =============================================================================
 st.set_page_config(
@@ -43,65 +49,141 @@ st.set_page_config(
 
 CUSTOM_CSS = """
 <style>
-/* Background gradient */
-.stApp {
-    background:
-        radial-gradient(ellipse at top left, rgba(102,255,136,0.05), transparent 45%),
-        radial-gradient(ellipse at bottom right, rgba(255,102,204,0.05), transparent 45%),
-        #07070c;
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+/* Global monospace */
+* { font-family: 'JetBrains Mono', monospace; }
+
+/* Hide Streamlit chrome */
+#MainMenu, footer, header { visibility: hidden; height: 0; }
+
+/* Main column */
+.block-container {
+    max-width: 1200px;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
+
+/* Sidebar */
 section[data-testid="stSidebar"] {
-    background-color: #0a0a12;
-    border-right: 1px solid #181824;
+    background: #121215;
+    border-right: 1px solid rgba(255,255,255,0.07);
 }
-h1, h2, h3 { letter-spacing: -0.01em; }
-
-/* Buttons */
-.stDownloadButton button, .stButton button {
-    border: 1px solid #2a2a3a;
-    background-color: #10101a;
-    color: #f0f0f0;
-    transition: all .15s ease;
-}
-.stDownloadButton button:hover, .stButton button:hover {
-    border-color: #66ff88;
-    color: #66ff88;
-    box-shadow: 0 0 0 1px rgba(102,255,136,0.25);
+section[data-testid="stSidebar"] .block-container {
+    padding-top: 1.5rem;
 }
 
-/* Hero header */
-.hero { padding: 1.25rem 0 0.25rem; }
-.hero .title {
-    font-size: 2.3rem; font-weight: 800; line-height: 1.05;
-    background: linear-gradient(90deg, #66ff88 0%, #3ddbff 50%, #ff66cc 100%);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-    background-clip: text;
+/* Headings (sidebar section labels) */
+h1, h2, h3 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    color: rgba(243,243,244,0.5);
+    margin-bottom: 0.5rem;
+    margin-top: 0.25rem;
 }
-.hero .subtitle { color: #8a8a98; font-size: 0.95rem; margin-top: 6px; }
-.badge {
-    display: inline-block; padding: 2px 10px; margin: 6px 6px 0 0;
-    border: 1px solid #2a2a3a; border-radius: 999px;
-    font-size: 0.72rem; color: #a0a0b0;
+
+/* Horizontal rule (replaces --- dividers) */
+hr {
+    border: none;
+    border-top: 1px dashed rgba(255,255,255,0.07);
+    margin: 1rem 0;
 }
 
 /* Tabs */
-button[data-baseweb="tab"] { font-weight: 600; }
+.stTabs [data-baseweb="tab-list"] {
+    background: #121215;
+    border-radius: 999px;
+    padding: 4px;
+    gap: 4px;
+    border: 1px solid rgba(255,255,255,0.07);
+    width: fit-content;
+}
+.stTabs [data-baseweb="tab"] {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border-radius: 999px;
+    color: rgba(243,243,244,0.5);
+    padding: 8px 20px;
+}
+.stTabs [aria-selected="true"] {
+    background: #f3f3f4 !important;
+    color: #0a0a0a !important;
+}
+
+/* File uploader */
+[data-testid="stFileUploader"] {
+    background: #17171b;
+    border: 1px dashed rgba(255,255,255,0.13);
+    border-radius: 11px;
+    padding: 1rem;
+}
+
+/* Download + action buttons */
+.stDownloadButton button, .stButton button {
+    width: 100%;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    background: #17171b;
+    border: 1px solid rgba(255,255,255,0.13);
+    border-radius: 11px;
+    color: #f3f3f4;
+    transition: all 0.15s ease;
+}
+.stDownloadButton button:hover, .stButton button:hover {
+    border-color: rgba(255,255,255,0.5);
+    background: #1d1d22;
+}
+
+/* Header wordmark */
+.studio-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+.studio-header .wordmark {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 1.9rem;
+    color: #f3f3f4;
+    line-height: 1;
+}
+.studio-header .byline {
+    font-size: 0.8rem;
+    color: rgba(243,243,244,0.5);
+}
+.studio-header .byline a {
+    color: #f4f4f4;
+    text-decoration: none;
+}
+.studio-header .byline a:hover { text-decoration: underline; }
+.studio-subtitle {
+    color: rgba(243,243,244,0.5);
+    font-size: 0.9rem;
+    margin: 0.4rem 0 0.75rem;
+}
 </style>
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 
 st.markdown(
-    """
-    <div class="hero">
-      <div class="title">ASCII Art Studio</div>
-      <div class="subtitle">Turn images and video into luminous ASCII — monochrome, true-color, or retro-themed.</div>
-      <div>
-        <span class="badge">Vectorized NumPy</span>
-        <span class="badge">True Color</span>
-        <span class="badge">CRT FX</span>
-        <span class="badge">MP4 Export</span>
-      </div>
+    f"""
+    <div class="studio-header">
+      <div class="wordmark">ASCII.STUDIO</div>
+      <div class="byline">$ built by <a href="{CREATOR_INSTAGRAM_URL}" target="_blank">@{CREATOR_HANDLE}</a></div>
     </div>
+    <div class="studio-subtitle">Turn images and video into luminous ASCII — monochrome, true-color, or retro-themed.</div>
     """,
     unsafe_allow_html=True,
 )
@@ -110,7 +192,7 @@ st.markdown(
 # Sidebar controls
 # =============================================================================
 with st.sidebar:
-    st.markdown("### Conversion")
+    st.markdown("### <span style='color:rgba(243,243,244,0.3)'>01 ·</span> CONVERSION", unsafe_allow_html=True)
     output_width = st.slider(
         "Output width (characters)", 60, 320, 160, 10,
         help="Wider = more detail, slower to render.",
@@ -121,12 +203,12 @@ with st.sidebar:
              "lower values squash vertically, higher values stretch.",
     )
 
-    st.markdown("### Tuning")
+    st.markdown("### <span style='color:rgba(243,243,244,0.3)'>02 ·</span> TUNING", unsafe_allow_html=True)
     brightness = st.slider("Brightness", -0.50, 0.50, 0.00, 0.05)
     contrast = st.slider("Contrast", 0.50, 2.00, 1.10, 0.05)
     gamma = st.slider("Gamma", 0.40, 2.50, 1.00, 0.05)
 
-    st.markdown("### Theme")
+    st.markdown("### <span style='color:rgba(243,243,244,0.3)'>03 ·</span> THEME", unsafe_allow_html=True)
     theme_name = st.selectbox("Color engine", list(THEMES.keys()), index=0)
     theme = THEMES[theme_name]
     st.caption(theme.get("description", ""))
@@ -148,7 +230,7 @@ with st.sidebar:
         help="On dark themes leave this off. For dark-on-light output, turn it on.",
     )
 
-    st.markdown("### Character ramp")
+    st.markdown("### <span style='color:rgba(243,243,244,0.3)'>04 ·</span> CHARACTER RAMP", unsafe_allow_html=True)
     charset = st.text_area(
         "Dense → sparse",
         value=DEFAULT_CHARSET,
@@ -160,12 +242,12 @@ with st.sidebar:
         st.warning("Charset too short; using the default.")
         charset = DEFAULT_CHARSET
 
-    st.markdown("### Visual FX")
+    st.markdown("### <span style='color:rgba(243,243,244,0.3)'>05 ·</span> VISUAL FX", unsafe_allow_html=True)
     fx_scanlines = st.slider("CRT scanlines", 0.00, 0.60, 0.00, 0.05)
     fx_noise = st.slider("Grain / noise", 0.00, 0.20, 0.00, 0.01)
     fx_glow = st.slider("Phosphor glow", 0.00, 0.80, 0.00, 0.05)
 
-    st.markdown("### Render")
+    st.markdown("### <span style='color:rgba(243,243,244,0.3)'>06 ·</span> RENDER", unsafe_allow_html=True)
     font_size = st.slider("Font size (px)", 8, 22, 12, 1)
 
     st.markdown("---")
@@ -445,9 +527,9 @@ Built with Streamlit, OpenCV, NumPy, and Pillow.
 """.format(img_mb=MAX_IMAGE_MB, vid_mb=MAX_VIDEO_MB)
     )
 st.markdown(
-    "<div style='text-align:center;color:#6b7280;padding:8px;font-size:13px;'>"
-    "Built by <a href='https://instagram.com/kanishk.io' "
-    "style='color:#ff3da2;text-decoration:none;'>@kanishk.io</a> · "
-    "Tag me if you make something cool</div>",
+    '<p style="text-align:center; color:rgba(243,243,244,0.3); '
+    'font-size:0.72rem; letter-spacing:0.12em; margin-top:2rem;">'
+    "$ ready &nbsp;&nbsp;·&nbsp;&nbsp; ascii.studio"
+    "</p>",
     unsafe_allow_html=True,
 )
